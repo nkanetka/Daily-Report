@@ -16,15 +16,13 @@
     @save-form="saveInputForm"
     @cancel-form="addNewFlight = false" />
     <table>
-      <th>
-        <tr>
-          <td>Student</td>
-          <td>Level of Training</td>
-          <td>TC exercise</td>
-          <td>Aircraft</td>
-          <td>Comments</td>
-        </tr>
-      </th>
+      <tr>
+        <th>Student</th>
+        <th>Level of Training</th>
+        <th>TC exercise</th>
+        <th>Aircraft</th>
+        <th>Comments</th>
+      </tr>
       <tr v-for="flight in this.flights" :key="flight.student">
         <td>{{ flight.student }}</td>
         <td>{{ flight.levelOfTraining }}</td>
@@ -119,15 +117,32 @@ form > * {
 h3 {
   margin: 40px 0 0;
 }
+
 ul {
   list-style-type: none;
   padding: 0;
 }
+
 li {
   display: inline-block;
   margin: 0 10px;
 }
+
 a {
   color: #42b983;
+}
+
+table {
+  width: 100%;
+}
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+td {
+  padding: 0.5rem;
+  text-align: center;
 }
 </style>
