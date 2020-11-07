@@ -33,10 +33,10 @@
       </tr>
       <tr v-for="flight in flights" :key="flight.student">
         <td>{{ flight.student }}</td>
-        <td>{{ flight.levelOfTraining }}</td>
+        <td>{{ `${flight.licenceLevel} ${flight.levelOfTraining}` }}</td>
         <td>{{ transportCanadaExerciseNumberFromName(flight.exercises) }}</td>
         <td>{{ aircraftStringFromRegistration(flight.aircraft) }}</td>
-        <td>{{ flight.comments }}</td>
+        <td>{{ commentsForFlight(flight) }}</td>
       </tr>
     </table>
 
@@ -56,6 +56,7 @@
 <script>
 import aircraftData from '@/data/aircraft';
 import exerciseData from '@/data/exercise';
+import blockData from '@/data/blocks';
 
 export default {
   name: 'PDFCard',
@@ -72,6 +73,16 @@ export default {
     },
     transportCanadaExerciseNumberFromName(exercises) {
       return exercises.map(exercise => exerciseData.exercises.find(exz => exz.name === exercise).id).join(', ');
+    },
+    commentsForFlight(flight) {
+      const block = blockData.blocks.find(block => block.code === flight.blockCode);
+      return `${block.shortName} ${block.name}
+
+      Dual Hours: ${flight.dualHours == null ? 'N/A' : `${flight.dualHours} / ${block.hours.dual}`}
+      Solo Hours: ${flight.soloHours == null ? 'N/A' : `${flight.soloHours} / ${block.hours.solo}`}
+      VFR Sim Hours: ${flight.vfrSimHours == null ? 'N/A' : `${flight.vfrSimHours} / ${block.hours.solo}`}
+
+      ${flight.comments}`;
     }
   }
 }
@@ -98,6 +109,7 @@ table, th, td {
 
 td {
   padding: 0.5rem;
+  white-space: pre
 }
 
 .instructor-information td {

@@ -90,7 +90,6 @@ export default {
   },
   methods: {
     saveInputForm(data) {
-      console.log(data);
       this.flights.push(data);
       this.addNewFlight = false;
     },
