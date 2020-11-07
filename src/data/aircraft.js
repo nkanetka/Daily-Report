@@ -117,6 +117,10 @@ export default {
       type: 'C152'
     },
     {
+      registration: 'C-GZKT',
+      type: 'C152'
+    },
+    {
       registration: 'TC798',
       type: 'ALSIM'
     },
