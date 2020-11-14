@@ -16,6 +16,13 @@
     @save-form="saveInputForm"
     @cancel-form="addNewFlight = false" />
     <table>
+      <colgroup>
+       <col span="1" style="width: 15%;">
+       <col span="1" style="width: 15%;">
+       <col span="1" style="width: 15%;">
+       <col span="1" style="width: 15%;">
+       <col span="1" style="width: 40%;">
+      </colgroup>
       <tr>
         <th>Student</th>
         <th>Level of Training</th>
@@ -26,9 +33,9 @@
       <tr v-for="flight in this.flights" :key="flight.student">
         <td>{{ flight.student }}</td>
         <td>{{ flight.levelOfTraining }}</td>
-        <td>{{ flight.exercises }}</td>
-        <td>{{ flight.aircraft }}</td>
-        <td>{{ flight.comments }}</td>
+        <td>{{ transportCanadaExerciseNumberFromName(flight.exercises) }}</td>
+        <td>{{ aircraftStringFromRegistration(flight.aircraft) }}</td>
+        <td class="comments">{{ commentsForFlight(flight) }}</td>
       </tr>
     </table>
 
@@ -37,7 +44,7 @@
     :float-layout="true"
     :enable-download="true"
     :preview-modal="false"
-    :paginate-elements-by-height="1400"
+    :paginate-elements-by-height="2000"
     :filename="this.date"
     :pdf-quality="2"
     :manual-pagination="false"
@@ -63,6 +70,10 @@
 import FlightCard from './FlightCard';
 import PDFCard from './PDFCard';
 import VueHtml2pdf from 'vue-html2pdf'
+
+import aircraftData from '@/data/aircraft';
+import exerciseData from '@/data/exercise';
+import blockData from '@/data/blocks';
 
 export default {
   name: 'TitleForm',
@@ -97,6 +108,23 @@ export default {
       console.log(`Generating Daily Report for ${this.instructorName} on ${this.date} for supervisory instructor ${this.supervisoryInstructor} for ${this.flights.length}`)
       this.flights.forEach(flight => console.log(flight));
       this.$refs.html2Pdf.generatePdf()
+    },
+    aircraftStringFromRegistration(registration) {
+      const currentAircraft = aircraftData.aircraft.find(plane => plane.registration === registration);
+      return `${currentAircraft.type} ${currentAircraft.registration}`;
+    },
+    transportCanadaExerciseNumberFromName(exercises) {
+      return exercises.map(exercise => `${exerciseData.exercises.find(exz => exz.name === exercise).id} - ${exercise}`).join(', ');
+    },
+    commentsForFlight(flight) {
+      const block = blockData.blocks.find(block => block.code === flight.blockCode);
+      return `${block.shortName} ${block.name}
+
+      Dual Hours: ${flight.dualHours == null ? 'N/A' : `${flight.dualHours} / ${block.hours.dual}`}
+      Solo Hours: ${flight.soloHours == null ? 'N/A' : `${flight.soloHours} / ${block.hours.solo}`}
+      VFR Sim Hours: ${flight.vfrSimHours == null ? 'N/A' : `${flight.vfrSimHours} / ${block.hours.vfrSimHours}`}
+
+      ${flight.comments}`;
     }
   }
 }
