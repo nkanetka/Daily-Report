@@ -36,7 +36,7 @@
         <td>{{ `${flight.licenceLevel} ${flight.levelOfTraining}` }}</td>
         <td>{{ transportCanadaExerciseNumberFromName(flight.exercises) }}</td>
         <td>{{ aircraftStringFromRegistration(flight.aircraft) }}</td>
-        <td>{{ commentsForFlight(flight) }}</td>
+        <td class="comments">{{ commentsForFlight(flight) }}</td>
       </tr>
     </table>
 
@@ -80,7 +80,7 @@ export default {
 
       Dual Hours: ${flight.dualHours == null ? 'N/A' : `${flight.dualHours} / ${block.hours.dual}`}
       Solo Hours: ${flight.soloHours == null ? 'N/A' : `${flight.soloHours} / ${block.hours.solo}`}
-      VFR Sim Hours: ${flight.vfrSimHours == null ? 'N/A' : `${flight.vfrSimHours} / ${block.hours.solo}`}
+      VFR Sim Hours: ${flight.vfrSimHours == null ? 'N/A' : `${flight.vfrSimHours} / ${block.hours.vfrSimHours}`}
 
       ${flight.comments}`;
     }
@@ -99,6 +99,7 @@ export default {
 }
 
 table {
+  table-layout: fixed;
   width: 100%;
 }
 
@@ -109,7 +110,7 @@ table, th, td {
 
 td {
   padding: 0.5rem;
-  white-space: pre
+  overflow-wrap: break-word;
 }
 
 .instructor-information td {
