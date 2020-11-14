@@ -40,5 +40,13 @@ export default {
       startYear: 2020,
       shortName: 'ATPL2020'
     },
+    {
+      name: 'SAPPL',
+      shortName: 'Standalone PPL'
+    },
+    {
+      name: 'SACPL',
+      shortName: 'Standalone CPL'
+    }
   ]
 }
